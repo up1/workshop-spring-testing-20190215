@@ -20,7 +20,11 @@ public class CustomerController {
     @GetMapping("/customers")
     public ResponseCustomer inquiryCustomers() {
         // Get data from repository
-        List<Customer> customers = (List<Customer>) repository.findAll();
+        List<Customer> customers
+                = (List<Customer>) repository.findAll();
+        if(customers.isEmpty()) {
+            throw new CustomerNotFoundException();
+        }
 
         // Make response
         ResponseCustomer responseCustomer = new ResponseCustomer();
@@ -28,6 +32,7 @@ public class CustomerController {
         responseCustomer.setMessage("OK");
         responseCustomer.setCustomer(customers);
         return responseCustomer;
+
     }
 
     private ResponseCustomer generateSuccessResult() {
